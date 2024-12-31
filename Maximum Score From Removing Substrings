@@ -1,0 +1,43 @@
+class Solution {
+public:
+
+    string make_string(string& s,string submatch){
+           stack<char>st;
+           for(char &ch:s){
+              if(ch==submatch[1] && !st.empty() and st.top()==submatch[0]){
+                 st.pop();
+              }else{
+                st.push(ch);
+              }
+           }
+           string temp="";
+           while(st.size()>0){
+               temp+=st.top();
+               st.pop();
+           }
+           reverse( temp.begin(),temp.end());
+           return temp;
+    }
+    int maximumGain(string s, int x, int y) {
+        // if x>y we will try to make ab first
+        // if y>x we will try to make ba first
+        // if x==y we can make anyone
+        int res=0;
+        if(x>y){
+             string temp_first=make_string(s,"ab");
+             int charRemoved=s.size()-temp_first.length();
+             res+=(charRemoved/2)*x;
+             string second_pass=make_string(temp_first,"ba");
+             charRemoved=temp_first.length()-second_pass.length();
+             res+=(charRemoved/2)*y;
+        }else{
+            string temp_first=make_string(s,"ba");
+             int charRemoved=s.size()-temp_first.length();
+             res+=(charRemoved/2)*y;
+             string second_pass=make_string(temp_first,"ab");
+             charRemoved=temp_first.length()-second_pass.length();
+             res+=(charRemoved/2)*x;
+        }
+        return res;
+    }
+};
