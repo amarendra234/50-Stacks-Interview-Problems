@@ -1,0 +1,67 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+/*You are required to complete this method*/
+class Solution {
+  public:
+    // Function to calculate the maximum area of a rectangle
+    // in the given matrix.
+     int largestRectangleArea(vector<int>& heights) {
+        int n=heights.size();
+        stack<int>st;
+        int left_smaller[n];
+        int right_smaller[n];
+        for(int i=0;i<n;i++){
+            while(!st.empty() and heights[st.top()]>=heights[i]){
+                st.pop();
+            }
+            if(!st.empty()){
+                left_smaller[i]=st.top();
+            }else{
+                left_smaller[i]=-1;
+            }
+            st.push(i);
+        }
+        while(st.size()>0){
+            st.pop();
+        }
+        for(int i=n-1;i>=0;i--){
+            while(!st.empty() and heights[st.top()]>=heights[i]){
+                st.pop();
+            }
+            if(!st.empty()){
+                right_smaller[i]=st.top();
+            }else{
+                right_smaller[i]=n;
+            }
+            st.push(i);
+        }
+        int ans=INT_MIN;
+        for(int i=0;i<n;i++){
+            int width=(right_smaller[i]-left_smaller[i])-1;
+            int height=heights[i];
+            ans=max(ans,width*height);
+        }
+        return ans;
+    }
+    int maxArea(vector<vector<int>> &mat) {
+        // Your code here
+        int n=mat.size();
+        int m=mat[0].size();
+        int ans=largestRectangleArea(mat[0]);
+        for(int i=1;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(mat[i][j]!=0){
+                    mat[i][j]+=mat[i-1][j];
+                }else{
+                    mat[i][j]=0;
+                }
+            }
+            ans=max(ans,largestRectangleArea(mat[i]));
+        }
+        return ans;
+    }
+};
