@@ -1,0 +1,80 @@
+class BrowserHistory {
+public:
+     // constructor to initialize object with homepage
+    stack<string>forwards;
+    stack<string>backwords;
+    BrowserHistory(string homepage) {
+        forwards.push(homepage);
+        while(backwords.size()>0){
+            backwords.pop();
+        }
+    }
+    
+    // visit current url
+    void visit(string url) {
+        forwards.push(url);
+        while(backwords.size()>0){
+            backwords.pop();
+        }
+    }
+    
+    // 'steps' move backward in history and return current page
+    string back(int steps) {
+        while(forwards.size()>1 and steps>0){
+            backwords.push(forwards.top());
+            forwards.pop();
+            steps--;
+        }
+        return forwards.top();
+    }
+    
+    // 'steps' move forward and return current page
+    string forward(int steps) {
+        while(!backwords.empty() and steps>0){
+            forwards.push(backwords.top());
+            backwords.pop();
+            steps--;
+        }
+        return forwards.top();
+    }
+};
+
+//{ Driver Code Starts.
+
+int main()
+{
+    string homepage;
+    cin >> homepage;
+    
+    BrowserHistory obj(homepage);
+    
+    int total_queries;
+    cin >> total_queries;
+    while(total_queries--)
+    {
+        int query;
+        cin >> query;
+        
+        // if query = 1, visit()
+        // if query = 2, back()
+        // if query = 3, forward()
+        
+        if(query == 1) {
+            string url;
+            cin >> url;
+            obj.visit(url);
+        }
+        else if(query == 2) {
+            int steps;
+            cin >> steps;
+            cout << obj.back(steps) << endl;
+        }
+        else {
+            int steps;
+            cin >> steps;
+            cout << obj.forward(steps) << endl;
+        }
+    }
+    return 0;
+}
+// } Driver Co
