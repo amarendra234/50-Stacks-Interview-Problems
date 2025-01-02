@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<string> buildArray(vector<int>& target, int n) {
+        vector<string>ans;
+       // stack<int>st;
+        int index=0;
+        for(int i=1;i<=n;i++){
+             int val=i;
+             ans.push_back("Push");
+             if(val!=target[index]){
+                ans.push_back("Pop");
+                 // st.pop();
+             }else{
+                  index++;
+             }
+             if(index==target.size()){
+                break;
+             }
+        }
+
+        return ans;
+    }
+};
